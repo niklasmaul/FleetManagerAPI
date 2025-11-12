@@ -2,6 +2,7 @@ package de.niklasmaul.fleetmanagerapi.controller;
 
 import de.niklasmaul.fleetmanagerapi.entity.Vehicle;
 import de.niklasmaul.fleetmanagerapi.service.VehicleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,9 @@ public class VehicleController {
     private VehicleService vehicleService;
 
     @PostMapping
-    public ResponseEntity<Object> postVehicle(@RequestBody Vehicle vehicle) {
+    public ResponseEntity<Object> postVehicle(@Valid @RequestBody Vehicle vehicle) {
         vehicleService.createVehicle(vehicle);
-        return new ResponseEntity<>("Vehicle successful created", HttpStatus.CREATED);
+        return new ResponseEntity<>("Vehicle successful created, " + vehicle, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -33,13 +34,14 @@ public class VehicleController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateVehicle(@PathVariable Long id, @RequestBody Vehicle vehicle) {
         vehicleService.updateVehicle(id, vehicle);
-        return new ResponseEntity<>("Vehicle successful updated", HttpStatus.CREATED);
+        return new ResponseEntity<>("Vehicle successful updated" + vehicleService.getVehicleById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteVehicle(@PathVariable Long id) {
+        Vehicle vehicle = vehicleService.getVehicleById(id);
         vehicleService.deleteVehicle(id);
-        return new ResponseEntity<>("Vehicle successful deleted", HttpStatus.OK);
+        return new ResponseEntity<>("Vehicle successful deleted" + vehicle, HttpStatus.OK);
     }
 
 }
