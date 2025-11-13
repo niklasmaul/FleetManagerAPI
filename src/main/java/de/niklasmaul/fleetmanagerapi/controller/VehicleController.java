@@ -3,7 +3,6 @@ package de.niklasmaul.fleetmanagerapi.controller;
 import de.niklasmaul.fleetmanagerapi.entity.Vehicle;
 import de.niklasmaul.fleetmanagerapi.service.VehicleService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/vehicles")
 public class VehicleController {
 
-    @Autowired
-    private VehicleService vehicleService;
+
+    private final VehicleService vehicleService;
+
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
+    }
 
     @PostMapping
     public ResponseEntity<Object> postVehicle(@Valid @RequestBody Vehicle vehicle) {

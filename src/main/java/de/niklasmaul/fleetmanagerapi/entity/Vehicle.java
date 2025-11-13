@@ -1,12 +1,11 @@
 package de.niklasmaul.fleetmanagerapi.entity;
 
 import de.niklasmaul.fleetmanagerapi.entity.enums.FuelType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Entity
 public class Vehicle {
@@ -14,11 +13,18 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank
-    private String brand, model;
+    private String brand;
+    @NotBlank
+    private String model;
     @NotNull
-    private Integer year, mileage;
+    private Integer year;
+    @NotNull
+    private Integer mileage;
     @NotNull
     private FuelType fuelType;
+
+    @OneToMany(mappedBy = "vehicle")
+    private List<Trip> trips;
 
     @Override
     public String toString() {
@@ -71,5 +77,9 @@ public class Vehicle {
 
     public void setFuelType(FuelType fuelType) {
         this.fuelType = fuelType;
+    }
+
+    public List<Trip> getTrips() {
+        return trips;
     }
 }
